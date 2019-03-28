@@ -1,5 +1,3 @@
-package com.example.student4.myapplication;
-
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -7,23 +5,53 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.Random;
+
 public class MainActivity extends AppCompatActivity {
-    Birzha_Thread t1 = new Birzha_Thread ("ttt");
     int money = 100000;
+    int vznos;
+    int procent = 1;
+    int prosh_procent;
+    int kurs = 100;
+    int nach_kurs = 100;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        t1.start();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         final TextView textView = findViewById(R.id.textView);
         final EditText editText2 = findViewById(R.id.editText2);
-        Button button = (Button)findViewById(R.id.Button);
-        button.setOnClickListener( new View.OnClickListener() {
-            double a;
+        final TextView textView2 = findViewById(R.id.textView2);
+        Thread thread = new Thread() {
+            public void run() {
+                while (true) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            textView2.setText(vznos);
+                        }
+                    });
+                    kurs = nach_kurs;
+                    Random random_procent = new Random();
+                    procent = random_procent.nextInt(200) - 100;
+                    kurs *= procent;
+                    try {
+                        Thread.sleep(10000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+        };
+        thread.start();
+        Button button = (Button) findViewById(R.id.Button);
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                money += t1.getID();
-                textView.setText("Tvoi den'gi: \n" + money); }
+                money += vznos;
+                textView.setText("Tvoi den'gi: \n" + money);
+            }
         });
 
 
