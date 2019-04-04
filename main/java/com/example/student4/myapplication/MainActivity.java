@@ -14,6 +14,10 @@ public class MainActivity extends AppCompatActivity {
     int prosh_procent;
     int kurs = 100;
     int nach_kurs = 100;
+    public int vnesti(int mon){
+        int vznos = mon/kurs;
+        return vznos;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,12 +32,12 @@ public class MainActivity extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            textView2.setText(vznos);
+                            textView2.setText(Integer.toString(kurs));
                         }
                     });
                     kurs = nach_kurs;
                     Random random_procent = new Random();
-                    procent = random_procent.nextInt(200) - 100;
+                    procent = random_procent.nextInt(100);
                     kurs *= procent;
                     try {
                         Thread.sleep(10000);
@@ -44,13 +48,17 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         };
+
         thread.start();
+
         Button button = (Button) findViewById(R.id.Button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                money += vznos;
-                textView.setText("Tvoi den'gi: \n" + money);
+
+                String edit = editText2.getText().toString();
+                int dengivbanke = vnesti(Integer.parseInt(edit));
+                textView.setText("Tvoi den'gi     " + dengivbanke);
             }
         });
 
